@@ -25,7 +25,8 @@ class _ChatPageState extends State<ChatPage> {
 
     final newPost = Post(
       text: text,
-      createdAt: null, // null を入れると ServerTimestamp を参照することになっています。
+      createdAt: null,
+      // null を入れると ServerTimestamp を参照することになっています。
       posterName: posterName,
       posterImageUrl: posterImageUrl,
       posterId: posterId,
@@ -66,11 +67,7 @@ class _ChatPageState extends State<ChatPage> {
             InkWell(
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const ProfilePage();
-                    },
-                  ),
+                  MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
               },
               child: CircleAvatar(
@@ -122,10 +119,7 @@ class _ChatPageState extends State<ChatPage> {
                   // 選択時の枠線
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(
-                      color: Colors.amber,
-                      width: 2,
-                    ),
+                    borderSide: const BorderSide(color: Colors.amber, width: 2),
                   ),
                   // 中を塗りつぶす色
                   fillColor: Colors.amber[50],

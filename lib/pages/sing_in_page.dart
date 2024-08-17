@@ -33,9 +33,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('GoogleSignIn'),
-      ),
+      appBar: AppBar(title: const Text('GoogleSignIn')),
       body: Center(
         child: ElevatedButton(
           child: const Text('GoogleSignIn'),
@@ -48,9 +46,7 @@ class _SignInPageState extends State<SignInPage> {
             // 前のページに戻らせないようにするにはpushAndRemoveUntilを使います。
             if (mounted) {
               await Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) {
-                  return const ChatPage();
-                }),
+                MaterialPageRoute(builder: (context) => const ChatPage()),
                 (route) => false,
               );
             }

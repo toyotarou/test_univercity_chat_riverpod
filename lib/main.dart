@@ -18,21 +18,16 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     // currentUser が null であればログインしていない
     if (FirebaseAuth.instance.currentUser == null) {
       // 未ログイン
-      return MaterialApp(
-        theme: ThemeData(),
-        home: const SignInPage(),
-      );
+      return MaterialApp(theme: ThemeData(), home: const SignInPage());
     } else {
       // ログイン中
-      return MaterialApp(
-        theme: ThemeData(),
-        home: const ChatPage(),
-      );
+      return MaterialApp(theme: ThemeData(), home: const ChatPage());
     }
   }
 }

@@ -27,10 +27,7 @@ class ProfilePage extends StatelessWidget {
             // ユーザー名
             Text(
               user.displayName!,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             const SizedBox(height: 16),
 
@@ -56,9 +53,7 @@ class ProfilePage extends StatelessWidget {
                 // SignInPage に遷移
                 // このページには戻れないようにします。
                 await navigator.pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) {
-                    return const SignInPage();
-                  }),
+                  MaterialPageRoute(builder: (context) => const SignInPage()),
                   (route) => false,
                 );
               },
