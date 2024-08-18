@@ -1,6 +1,7 @@
 import 'package:chat/providers/auth_provider.dart';
 import 'package:chat/providers/firestore_provider.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 
 //
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -25,6 +26,19 @@ Future<void> main() async {
     ProviderScope(
       overrides: [
         firestoreProvider.overrideWithValue(FakeFirebaseFirestore()),
+        firebaseAuthProvider.overrideWithValue(
+          MockFirebaseAuth(
+            signedIn: true,
+            mockUser: MockUser(
+              isAnonymous: false,
+              uid: 'someuid',
+              email: 'hide.toyoda@gmail.com',
+              displayName: '豊田　英之',
+              photoURL:
+                  'http://toyohide.work/BrainLog/public/UPPHOTO/2024/2024-08-17/20240817_142006821.jpg',
+            ),
+          ),
+        ),
       ],
       child: const MyApp(),
     ),
