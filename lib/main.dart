@@ -1,3 +1,5 @@
+import 'package:chat/providers/firestore_provider.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,14 @@ Future<void> main() async {
     // これが Firebase の初期化処理です。
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        firestoreProvider.overrideWithValue(FakeFirebaseFirestore()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
