@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/post/post.dart';
-import '../references.dart';
+
+//
+// import '../references.dart';
+//
+
 import '../widgets/post_widget.dart';
 import 'profile_page.dart';
 
