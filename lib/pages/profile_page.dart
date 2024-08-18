@@ -1,17 +1,29 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:chat/providers/auth_provider.dart';
+
+//
+// import 'package:firebase_auth/firebase_auth.dart';
+//
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'sing_in_page.dart';
+//
+// import 'sing_in_page.dart';
+//
 
-class ProfilePage extends StatelessWidget {
+//class ProfilePage extends StatelessWidget
+class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // 何度も FirebaseAuth.instance.currentUser! と書くのは大変です。
-    // そこで適当な変数名をつけた変数に一時的に値を格納して記述量を短くする場合あります。
-    final user = FirebaseAuth.instance.currentUser!;
+  Widget build(
+      //      BuildContext context
+      BuildContext context,
+      WidgetRef ref) {
+//    final user = FirebaseAuth.instance.currentUser!;
+    final user = ref.read(userProvider).value!;
+
     return Scaffold(
       appBar: AppBar(title: const Text('マイページ')),
       body: Container(
@@ -48,14 +60,20 @@ class ProfilePage extends StatelessWidget {
                 final navigator = Navigator.of(context);
                 // Google からサインアウト
                 await GoogleSignIn().signOut();
-                // Firebase からサインアウト
-                await FirebaseAuth.instance.signOut();
-                // SignInPage に遷移
-                // このページには戻れないようにします。
-                await navigator.pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const SignInPage()),
-                  (route) => false,
-                );
+
+//                await FirebaseAuth.instance.signOut();
+                await ref.read(firebaseAuthProvider).signOut();
+
+                //
+                // // SignInPage に遷移
+                // // このページには戻れないようにします。
+                // await navigator.pushAndRemoveUntil(
+                //   MaterialPageRoute(builder: (context) => const SignInPage()),
+                //   (route) => false,
+                // );
+                //
+
+                navigator.pop();
               },
               child: const Text('サインアウト'),
             ),

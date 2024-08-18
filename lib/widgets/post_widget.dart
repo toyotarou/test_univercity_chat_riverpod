@@ -1,16 +1,26 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:chat/providers/auth_provider.dart';
+
+//
+// import 'package:firebase_auth/firebase_auth.dart';
+//
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../models/post/post.dart';
 
-class PostWidget extends StatelessWidget {
+//class PostWidget extends StatelessWidget
+class PostWidget extends ConsumerWidget {
   const PostWidget({super.key, required this.post});
 
   final Post post;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+      //      BuildContext context
+      BuildContext context,
+      WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Row(
@@ -51,27 +61,33 @@ class PostWidget extends StatelessWidget {
                         // 角丸にするにはこれを追加します。
                         // 4 の数字を大きくするともっと丸くなります。
                         borderRadius: BorderRadius.circular(4),
-                        // 色はここで変えられます
-                        // [100] この数字を小さくすると色が薄くなります。
-                        // [条件式] ? A : B の三項演算子を使っています。
-                        color: FirebaseAuth.instance.currentUser!.uid ==
-                                post.posterId
-                            ? Colors.amber[100]
-                            : Colors.blue[100],
+
+                        //
+                        // color: FirebaseAuth.instance.currentUser!.uid ==
+                        //         post.posterId
+                        //     ? Colors.amber[100]
+                        //     : Colors.blue[100],
+                        //
+
+                        color:
+                            (ref.read(uidProvider).value ?? '') == post.posterId
+                                ? Colors.amber[100]
+                                : Colors.blue[100],
                       ),
                       child: Text(post.text),
                     ),
+                    if (
 
-                    /// Row のなかに Row をいれて要素をまとめます
-                    /// if文もこのRowの上に移動して、それぞれのボタンに書いていたものは削除してOKです。
-                    ///
-                    ///  List の中の場合は if 文であっても {} この波かっこはつけなくてよい
-                    if (FirebaseAuth.instance.currentUser!.uid == post.posterId)
+//                    FirebaseAuth.instance.currentUser!.uid == post.posterId
+                        (ref.read(uidProvider).value ?? '') == post.posterId)
                       Row(
                         children: [
                           /// 編集ボタン
-                          if (FirebaseAuth.instance.currentUser!.uid ==
-                              post.posterId)
+                          if (
+
+//                          FirebaseAuth.instance.currentUser!.uid ==post.posterId
+                              (ref.read(uidProvider).value ?? '') ==
+                                  post.posterId)
                             IconButton(
                               onPressed: () {
                                 showDialog(

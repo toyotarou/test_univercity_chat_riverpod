@@ -1,6 +1,11 @@
+import 'package:chat/providers/auth_provider.dart';
 import 'package:chat/providers/posts_provider.dart';
 import 'package:chat/providers/posts_reference_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+//
+// import 'package:firebase_auth/firebase_auth.dart';
+//
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,8 +27,8 @@ class ChatPage extends ConsumerStatefulWidget {
 
 class _ChatPageState extends ConsumerState<ChatPage> {
   Future<void> sendPost(String text) async {
-    // まずは user という変数にログイン中のユーザーデータを格納します
-    final user = FirebaseAuth.instance.currentUser!;
+    //    final user = FirebaseAuth.instance.currentUser!;
+    final user = ref.watch(userProvider).value!;
 
     final posterId = user.uid; // ログイン中のユーザーのIDがとれます
     final posterName = user.displayName!; // Googleアカウントの名前がとれます
@@ -80,7 +85,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               },
               child: CircleAvatar(
                 backgroundImage: NetworkImage(
-                  FirebaseAuth.instance.currentUser!.photoURL!,
+//                  FirebaseAuth.instance.currentUser!.photoURL!,
+                  ref.watch(userProvider).value!.photoURL!,
                 ),
               ),
             )
