@@ -1,20 +1,22 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:chat/providers/posts_provider.dart';
+import 'package:chat/providers/posts_reference_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/post/post.dart';
 import '../references.dart';
 import '../widgets/post_widget.dart';
 import 'profile_page.dart';
 
-class ChatPage extends StatefulWidget {
+class ChatPage extends ConsumerStatefulWidget {
   const ChatPage({super.key});
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
+  ConsumerState<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends ConsumerState<ChatPage> {
   Future<void> sendPost(String text) async {
     // まずは user という変数にログイン中のユーザーデータを格納します
     final user = FirebaseAuth.instance.currentUser!;
@@ -30,8 +32,10 @@ class _ChatPageState extends State<ChatPage> {
       posterName: posterName,
       posterImageUrl: posterImageUrl,
       posterId: posterId,
-      // doc の引数を空にするとランダムなIDが採番されます
-      reference: postsReferenceWithConverter.doc(),
+
+      ///
+//      reference: postsReferenceWithConverter.doc(),
+      reference: ref.read(postsReferenceProvider).doc(),
     );
 
     // 先ほど作った newDocumentReference のset関数を実行するとそのドキュメントにデータが保存されます。
@@ -81,7 +85,30 @@ class _ChatPageState extends State<ChatPage> {
         body: Column(
           children: [
             Expanded(
-              child: StreamBuilder<QuerySnapshot<Post>>(
+              child: ref.watch(postsProvider).when(
+                data: (data) {
+                  return ListView.builder(
+                    itemCount: data.docs.length,
+                    itemBuilder: (context, index) {
+                      final post = data.docs[index].data();
+                      return PostWidget(post: post);
+                    },
+                  );
+                },
+                error: (error, stackTrace) {
+                  return const Center(
+                    child: Text('不具合が発生しました。'),
+                  );
+                },
+                loading: () {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
+
+              /*
+              StreamBuilder<QuerySnapshot<Post>>(
                 // stream プロパティに snapshots() を与えると、コレクションの中のドキュメントをリアルタイムで監視することができます。
                 stream: postsReferenceWithConverter
                     .orderBy('createdAt')
@@ -104,6 +131,7 @@ class _ChatPageState extends State<ChatPage> {
                   );
                 },
               ),
+              */
             ),
             Padding(
               padding: const EdgeInsets.all(8),
